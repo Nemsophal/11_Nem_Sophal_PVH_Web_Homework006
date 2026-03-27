@@ -1,18 +1,21 @@
-const BASE_URL = "https://homework-api.noevchanmakara.site/api/v1";
+export async function getProducts() {
+  try {
 
-export const ProductService = {
-  getProducts: async () => {
-    const response = await fetch(`${BASE_URL}/products`);
+    const response = await fetch('https://homework-api.noevchanmakara.site/api/v1/products', {
+      cache: 'no-store' 
+    });
+
     if (!response.ok) {
-      throw new Error("Failed to fetch products");
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json();
-  },
-  getProductById: async (productId) => {
-    const response = await fetch(`${BASE_URL}/products/${productId}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch product");
-    }
-    return response.json();
+
+    const data = await response.json();
+
+    
+    return data?.payload || []; 
+    
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    return []; 
   }
-};
+}
